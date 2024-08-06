@@ -1,6 +1,6 @@
 {
   "name": "coinbase-wallet-sdk-react-native",
-  "version": "4.0.4",
+  "version": "4.0.6",
   "description": "Coinbase Wallet JavaScript SDK (React Native)",
   "keywords": [
     "coinbase",

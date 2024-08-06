@@ -32,6 +32,12 @@ export class SCWStateManager {
     this._walletCapabilities = this.loadItemFromStorage(WALLET_CAPABILITIES_STORAGE_KEY);
     const accounts = this.loadItemFromStorage<AddressString[]>(ACCOUNTS_KEY);
     const chain = this.loadItemFromStorage<Chain>(ACTIVE_CHAIN_STORAGE_KEY);
+    if (accounts) {
+      this.updateListener.onAccountsUpdate(accounts);
+    }
+    if (chain) {
+      this.updateListener.onChainUpdate(chain);
+    }
     this._accounts = accounts || [];
     this._activeChain = chain || { id: params.appChainIds?.[0] ?? 1 };
   }
