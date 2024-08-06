@@ -1,7 +1,7 @@
 import { StateUpdateListener } from '../interface';
 import { SCWKeyManager } from './SCWKeyManager';
 import { SCWStateManager } from './SCWStateManager';
-import { Communicator } from ':core/communicator/Communicator';
+import { CommunicatorType } from ':core/communicator/Communicator';
 import { standardErrors } from ':core/error';
 import { RPCRequestMessage, RPCResponse, RPCResponseMessage } from ':core/message';
 import { AppMetadata, RequestArguments, Signer } from ':core/provider/interface';
@@ -23,13 +23,13 @@ type SwitchEthereumChainParam = [
 
 export class SCWSigner implements Signer {
   private readonly metadata: AppMetadata;
-  private readonly communicator: Communicator;
+  private readonly communicator: CommunicatorType;
   private readonly keyManager: SCWKeyManager;
   private readonly stateManager: SCWStateManager;
 
   constructor(params: {
     metadata: AppMetadata;
-    communicator: Communicator;
+    communicator: CommunicatorType;
     updateListener: StateUpdateListener;
   }) {
     this.metadata = params.metadata;

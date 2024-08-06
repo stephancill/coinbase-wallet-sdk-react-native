@@ -1,5 +1,6 @@
 import { EventEmitter } from 'eventemitter3';
 
+import { CommunicatorType } from '../communicator/Communicator';
 import { Method } from './method';
 import { AddressString } from ':core/type';
 
@@ -50,6 +51,7 @@ export interface Preference {
 export interface ConstructorOptions {
   metadata: AppMetadata;
   preference: Preference;
+  communicator?: CommunicatorType;
 }
 
 export interface Signer {

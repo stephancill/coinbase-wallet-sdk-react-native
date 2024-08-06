@@ -4,6 +4,15 @@ import { CB_KEYS_URL } from ':core/constants';
 import { standardErrors } from ':core/error';
 import { closePopup, openPopup } from ':util/web';
 
+export interface CommunicatorType {
+  postMessage(message: Message): Promise<any | void>;
+  postRequestAndWaitForResponse<M extends Message>(
+    request: Message & { id: MessageID }
+  ): Promise<M>;
+  onMessage<M extends Message>(predicate: (_: Partial<M>) => boolean): Promise<M>;
+  waitForPopupLoaded(): Promise<Window>;
+}
+
 /**
  * Communicates with a popup window for Coinbase keys.coinbase.com (or another url)
  * to send and receive messages.
@@ -13,7 +22,7 @@ import { closePopup, openPopup } from ':util/web';
  *
  * It also handles cleanup of event listeners and the popup window itself when necessary.
  */
-export class Communicator {
+export class Communicator implements CommunicatorType {
   private readonly url: URL;
   private popup: Window | null = null;
   private listeners = new Map<(_: MessageEvent) => void, { reject: (_: Error) => void }>();

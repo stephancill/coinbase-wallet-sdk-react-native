@@ -1,7 +1,7 @@
 import { StateUpdateListener } from './interface';
 import { SCWSigner } from './scw/SCWSigner';
 import { WalletLinkSigner } from './walletlink/WalletLinkSigner';
-import { Communicator } from ':core/communicator/Communicator';
+import { CommunicatorType } from ':core/communicator/Communicator';
 import { standardErrors } from ':core/error';
 import { ConfigMessage, MessageID, SignerType } from ':core/message';
 import { AppMetadata, Preference, Signer } from ':core/provider/interface';
@@ -20,7 +20,7 @@ export function storeSignerType(signerType: SignerType) {
 }
 
 export async function fetchSignerType(params: {
-  communicator: Communicator;
+  communicator: CommunicatorType;
   preference: Preference;
   metadata: AppMetadata; // for WalletLink
 }): Promise<SignerType> {
@@ -39,7 +39,7 @@ export async function fetchSignerType(params: {
 export function createSigner(params: {
   signerType: SignerType;
   metadata: AppMetadata;
-  communicator: Communicator;
+  communicator: CommunicatorType;
   updateListener: StateUpdateListener;
 }): Signer {
   const { signerType, metadata, communicator, updateListener } = params;
@@ -66,7 +66,7 @@ export function createSigner(params: {
 }
 
 async function listenForWalletLinkSessionRequest(
-  communicator: Communicator,
+  communicator: CommunicatorType,
   metadata: AppMetadata
 ) {
   await communicator.onMessage<ConfigMessage>(({ event }) => event === 'WalletLinkSessionRequest');

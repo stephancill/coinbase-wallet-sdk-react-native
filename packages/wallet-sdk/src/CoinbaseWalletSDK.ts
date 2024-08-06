@@ -2,6 +2,7 @@
 
 import { LogoType, walletLogo } from './assets/wallet-logo';
 import { CoinbaseWalletProvider } from './CoinbaseWalletProvider';
+import { CommunicatorType } from './core/communicator/Communicator';
 import { AppMetadata, Preference, ProviderInterface } from './core/provider/interface';
 import { ScopedLocalStorage } from './util/ScopedLocalStorage';
 import { LIB_VERSION } from './version';
@@ -13,19 +14,24 @@ type CoinbaseWalletSDKOptions = Partial<AppMetadata>;
 
 export class CoinbaseWalletSDK {
   private metadata: AppMetadata;
+  private communicator?: CommunicatorType;
 
-  constructor(metadata: Readonly<CoinbaseWalletSDKOptions>) {
+  constructor(metadata: Readonly<CoinbaseWalletSDKOptions>, communicator?: CommunicatorType) {
     this.metadata = {
       appName: metadata.appName || 'Dapp',
       appLogoUrl: metadata.appLogoUrl || getFavicon(),
       appChainIds: metadata.appChainIds || [],
     };
+    this.communicator = communicator;
     this.storeLatestVersion();
   }
 
   public makeWeb3Provider(preference: Preference = { options: 'all' }): ProviderInterface {
     const params = { metadata: this.metadata, preference };
-    return getCoinbaseInjectedProvider(params) ?? new CoinbaseWalletProvider(params);
+    return (
+      getCoinbaseInjectedProvider(params) ??
+      new CoinbaseWalletProvider({ ...params, communicator: this.communicator })
+    );
   }
 
   /**
